@@ -28,10 +28,33 @@ function showGifts() {
 }
 
 function buyGift() {
-  const giftId = Number(input("Enter the number of the gift you want to get: "));
-  const giftIndex = gifts.findIndex(g => g.id === giftId);
-  const gift = gifts.splice(giftIndex, 1)[0];
+  if (gifts.length === 0) {
+    console.log("Wow! There are no gifts to buy.");
+    return;
+  }
 
+  const userInput = input("Enter the number of the gift you want to get: ");
+  const errorMessage = validateNumberInput(userInput, 1, Number.MAX_VALUE);
+  if (errorMessage) {
+    console.log("Please enter a valid number!");
+    return;
+  }
+
+  const giftId = Number(userInput);
+  const giftIndex = gifts.findIndex(g => g.id === giftId);
+
+  if (giftIndex === -1) {
+    console.log("There is no gift with that number!");
+    return;
+  }
+
+  const gift = gifts.find(g => g.id === giftId);
+  if (gift.price > totalTickets) {
+    console.log("You don't have enough tickets to buy this gift.");
+    return;
+  }
+
+  gifts.splice(giftIndex, 1);
   totalTickets -= gift.price;
   console.log(`Here you go, one ${gift.name}!`);
 
@@ -62,7 +85,7 @@ function validateNumberInput(userInput, min, max) {
 
 function showMainMenu() {
   console.log("What do you want to do?");
-  let userInput = input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts 5-Exit the shop\n");
+  const userInput = input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts 5-Exit the shop\n");
 
   const errorMessage = validateNumberInput(userInput, 1, 5);
   if (errorMessage) {
