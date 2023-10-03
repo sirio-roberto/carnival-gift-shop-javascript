@@ -1,6 +1,6 @@
 const input = require('sync-input');
 
-let totalTickets = 100;
+let totalTickets = 0;
 
 let giftId = 1;
 const Gift = function (name, price) {
@@ -29,7 +29,8 @@ function showGifts() {
 
 function buyGift() {
   const giftId = Number(input("Enter the number of the gift you want to get: "));
-  const gift = gifts.find(g => g.id === giftId);
+  const giftIndex = gifts.findIndex(g => g.id === giftId);
+  const gift = gifts.splice(giftIndex, 1)[0];
 
   totalTickets -= gift.price;
   console.log(`Here you go, one ${gift.name}!`);
@@ -50,7 +51,7 @@ function checkTickets() {
 
 function showMainMenu() {
   console.log("What do you want to do?");
-  const userChoice = Number(input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts\n"));
+  const userChoice = Number(input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts 5-Exit the shop\n"));
   if (userChoice === 1) {
     buyGift();
   } else if (userChoice === 2) {
@@ -61,7 +62,10 @@ function showMainMenu() {
   }
   else if (userChoice === 4) {
     showGifts();
+  } else if (userChoice === 5) {
+    return -1;
   }
+  return 1;
 }
 
 function main() {
@@ -70,7 +74,10 @@ function main() {
   showGifts();
   console.log();
 
-  showMainMenu();
+  while (showMainMenu() === 1) {
+    console.log();
+  }
+
   console.log("Have a nice day!");
 }
 
