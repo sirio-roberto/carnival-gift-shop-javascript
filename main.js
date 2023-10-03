@@ -24,7 +24,12 @@ const gifts = [
 
 function showGifts() {
   console.log("Here's the list of gifts:\n");
-  gifts.forEach(gift => console.log(`${gift.id}- ${gift.name}, Cost: ${gift.price} tickets`));
+
+  if (gifts.length > 0) {
+    gifts.forEach(gift => console.log(`${gift.id}- ${gift.name}, Cost: ${gift.price} tickets`));
+  } else {
+    console.log("Wow! There are no gifts to buy.");
+  }
 }
 
 function buyGift() {
@@ -63,9 +68,12 @@ function buyGift() {
 
 function addTickets() {
   const tickets = Number(input("Enter the ticket amount: "));
-  totalTickets += tickets;
-
-  checkTickets();
+  if (isNaN(tickets) || tickets < 0 || tickets > 1000) {
+    console.log("Please enter a valid number between 0 and 1000.");
+  } else {
+    totalTickets += tickets;
+    checkTickets();
+  }
 }
 
 function checkTickets() {
