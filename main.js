@@ -49,9 +49,27 @@ function checkTickets() {
   console.log("Total tickets: " + totalTickets);
 }
 
+function validateNumberInput(userInput, min, max) {
+  if (!/^\d+$/.test(userInput)) {
+    return "Please enter a valid number!\n";
+  }
+  const inputNumber = Number(userInput);
+  if (inputNumber < min || inputNumber > max) {
+    return "Please enter a valid number!\n";
+  }
+  return "";
+}
+
 function showMainMenu() {
   console.log("What do you want to do?");
-  const userChoice = Number(input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts 5-Exit the shop\n"));
+  let userInput = input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts 5-Exit the shop\n");
+
+  const errorMessage = validateNumberInput(userInput, 1, 5);
+  if (errorMessage) {
+    console.log("Please enter a valid number!");
+    return 1;
+  }
+  const userChoice = Number(userInput);
   if (userChoice === 1) {
     buyGift();
   } else if (userChoice === 2) {
