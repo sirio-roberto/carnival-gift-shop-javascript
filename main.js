@@ -1,3 +1,6 @@
+const input = require('sync-input');
+
+let totalTickets = 100;
 
 let giftId = 1;
 const Gift = function (name, price) {
@@ -6,7 +9,7 @@ const Gift = function (name, price) {
   this.price = price;
 }
 
-const itemList = [
+const gifts = [
   new Gift("Teddy Bear", 10),
   new Gift("Big Red Ball", 5),
   new Gift("Huge Bear", 50),
@@ -19,12 +22,56 @@ const itemList = [
   new Gift("Scary Mask", 75),
 ];
 
+function showGifts() {
+  console.log("Here's the list of gifts:\n");
+  gifts.forEach(gift => console.log(`${gift.id}- ${gift.name}, Cost: ${gift.price} tickets`));
+}
+
+function buyGift() {
+  const giftId = Number(input("Enter the number of the gift you want to get: "));
+  const gift = gifts.find(g => g.id === giftId);
+
+  totalTickets -= gift.price;
+  console.log(`Here you go, one ${gift.name}!`);
+
+  checkTickets();
+}
+
+function addTickets() {
+  const tickets = Number(input("Enter the ticket amount: "));
+  totalTickets += tickets;
+
+  checkTickets();
+}
+
+function checkTickets() {
+  console.log("Total tickets: " + totalTickets);
+}
+
+function showMainMenu() {
+  console.log("What do you want to do?");
+  const userChoice = Number(input("1-Buy a gift 2-Add tickets 3-Check tickets 4-Show gifts\n"));
+  if (userChoice === 1) {
+    buyGift();
+  } else if (userChoice === 2) {
+    addTickets();
+  }
+  else if (userChoice === 3) {
+    checkTickets();
+  }
+  else if (userChoice === 4) {
+    showGifts();
+  }
+}
+
 function main() {
   console.log("WELCOME TO THE CARNIVAL GIFT SHOP!");
   console.log("Hello friend! Thank you for visiting the carnival!");
-  console.log("Here's the list of gifts:\n");
+  showGifts();
+  console.log();
 
-  itemList.forEach(item => console.log(`${item.id}- ${item.name}, Cost: ${item.price} tickets`));
+  showMainMenu();
+  console.log("Have a nice day!");
 }
 
 main();
